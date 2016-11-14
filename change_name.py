@@ -3,12 +3,24 @@ import sys
 import os
 import codecs
 
-helpString = "修改文件名，给文件名添加序号：\n" \
+helpString = "add number for your filename like this filename_1.png：\n" \
              "  -h --- for help\n" \
-             "  -d --- 目标文件夹目录\n\n" \
-             "  -a --- 添加后缀\n" \
-             "  -c --- 清除最后的后缀\n\n" \
-             "  -m --- 模式设置\n"
+             "  -d --- source file dir\n\n" \
+             "  -a --- add number\n" \
+             "  -c --- clear number\n\n"
+
+
+# 在文件名末尾添加 _num 标记
+def append_name_by_dot(items, slap, index):
+    length = len(items)
+    new_path = ""
+    for i in range(length):
+        if i == length - 2:
+            items[i] += slap + str(index)
+        if i != length - 1:
+            new_path += items[i] + "."
+    new_path += items[-1]
+    return new_path
 
 
 # find the files and change their name
@@ -20,22 +32,25 @@ def change_name(file_dir, mode, is_add):
             index += 1
             file_path = file_dir+"\\"+f
             items = f.split(".")
-            new_path = file_dir+"\\" + items[-2]+"_"+str(index)+"."+items[-1]
+            new_path = file_dir + "\\" + append_name_by_dot(items, "_", index)
             print new_path
             os.rename(file_path, new_path)
     else:
         for f in filenames:
             file_path = file_dir + "\\" + f
             items = f.split(".")
-            temps = items[0].split("_")
+            temps = items[-2].split("_")
             length = len(temps)
             new_path = file_dir + "\\"
+            lastname = ""
             for i in range(length):
                 if i != length - 1:
-                    new_path += temps[i]
+                    lastname += temps[i]
                 if i < length - 2:
-                    new_path += "_"
-            new_path += "."+items[-1]
+                    lastname += "_"
+            items[-2] = lastname
+            new_path += append_name_by_dot(items, "", "")
+            print new_path
             os.rename(file_path, new_path)
     return
 
