@@ -3,9 +3,9 @@ import sys
 import os
 import codecs
 
-helpString = "add number for your filename like this filename_1.png：\n" \
+helpString = "add number for your filename like this filename_1.png\n" \
              "  -h --- for help\n" \
-             "  -d --- source file dir\n\n" \
+             "  -d --- source file dir\n" \
              "  -a --- add number\n" \
              "  -c --- clear number\n\n"
 
