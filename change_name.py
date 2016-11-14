@@ -10,7 +10,7 @@ helpString = "add number for your filename like this filename_1.png：\n" \
              "  -c --- clear number\n\n"
 
 
-# 在文件名末尾添加 _num 标记
+# 在文件名末尾添加 _index 标记, 并且合并成完整文件名
 def append_name_by_dot(items, slap, index):
     length = len(items)
     new_path = ""
