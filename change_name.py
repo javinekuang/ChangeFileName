@@ -10,46 +10,29 @@ helpString = "add number for your filename like this filename_1.png\n" \
              "  -c --- clear number\n\n"
 
 
-# 在文件名末尾添加 _index 标记, 并且合并成完整文件名
-def append_name_by_dot(items, slap, index):
-    length = len(items)
-    new_path = ""
-    for i in range(length):
-        if i == length - 2:
-            items[i] += slap + str(index)
-        if i != length - 1:
-            new_path += items[i] + "."
-    new_path += items[-1]
-    return new_path
-
-
 # find the files and change their name
-def change_name(file_dir, mode, is_add):
+def change_name(file_dir, is_add):
+    sep_dot = "."
+    sep_line = "_"
     filenames = os.listdir(file_dir)
     index = 0
     if is_add:
         for f in filenames:
             index += 1
             file_path = file_dir+"\\"+f
-            items = f.split(".")
-            new_path = file_dir + "\\" + append_name_by_dot(items, "_", index)
+            items = f.split(sep_dot)
+            items[-2] = items[-2]+sep_line+str(index)
+            new_path = file_dir + "\\" + sep_dot.join(items)
             print new_path
             os.rename(file_path, new_path)
     else:
         for f in filenames:
             file_path = file_dir + "\\" + f
-            items = f.split(".")
-            temps = items[-2].split("_")
-            length = len(temps)
+            items = f.split(sep_dot)
+            temps = items[-2].split(sep_line)
+            items[-2] = sep_line.join(temps[:-1])
             new_path = file_dir + "\\"
-            lastname = ""
-            for i in range(length):
-                if i != length - 1:
-                    lastname += temps[i]
-                if i < length - 2:
-                    lastname += "_"
-            items[-2] = lastname
-            new_path += append_name_by_dot(items, "", "")
+            new_path += sep_dot.join(items)
             print new_path
             os.rename(file_path, new_path)
     return
@@ -73,7 +56,7 @@ def deal_actions():
             is_add = True
         elif arg.__eq__("-c"):
             is_add = False
-    change_name(file_dir, mode, is_add)
+    change_name(file_dir, is_add)
     return
 
 
